@@ -10,4 +10,4 @@ node app.js
 
 And you can access the app from any of your brower by visiting the url =locahost:3000=.
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/[davinderpro]/[reponame]/blob/[branch]/image.jpg?raw=true)
