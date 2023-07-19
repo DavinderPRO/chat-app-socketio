@@ -4,7 +4,7 @@
     <title>Chat</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="static/materialize.min.css" media="screen,projection">
-     <link rel = "icon" href = "static/chatroomlogo.png"         type = "image/x-icon">
+    <link rel="icon" href="static/chatroomlogo.png" type="image/x-icon">
     <style type="text/css">
         .my-message {
             float: right;
@@ -37,6 +37,15 @@
             font-style: italic;
             font-size: small;
         }
+
+        .message-box {
+            margin: 5px;
+            padding: 5px;
+            width: 500px;
+            height: 110px;
+            overflow: auto;
+            text-align: justify;
+        }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
@@ -57,7 +66,7 @@
                     <form class="col s6 offset-s3" id="nickname-form">
                         <div class="row">
                             <div class="input-field">
-                                <input id="nickname" type="text" class="validate">
+                                <input id="nickname" type="text" required class="validate">
                                 <label for="nickname">Nickname</label>
                             </div>
                             <span style="color: red; display: none;" id="error-message">This nickname is already
@@ -79,7 +88,7 @@
                         <div class="row" style="margin-bottom: 0;">
                             <div class="input-field col s11">
                                 <i class="material-icons prefix">mode_edit</i>
-                                <textarea id="message" class="materialize-textarea"></textarea>
+                                <textarea id="message" required class="materialize-textarea"></textarea>
                                 <label for="message">Message</label>
                             </div>
                             <div class="col s1">
@@ -114,10 +123,13 @@
             });
 
             $('#send-message').click(function (e) {
-                e.preventDefault();
-                socket.emit('send message', $('#message').val());
-                $('.message-box').append("<div class='row message-row'><div class='col' style='float: right; max-width: 80%;'><p class='my-message'>" + $('#message').val() + '</p></div></div>');
-                $('#message').val('');
+                const message = $('#message').val();
+                if (message) {
+                    e.preventDefault();
+                    socket.emit('send message', message);
+                    $('.message-box').append("<div class='row message-row'><div class='col' style='float: right; max-width: 80%;'><p class='my-message'>" + message + '</p></div></div>');
+                    $('#message').val('');
+                }
             });
             socket.once("all messages", function (dataArray) {
                 dataArray.forEach(appendMessage);

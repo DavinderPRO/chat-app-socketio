@@ -13,7 +13,6 @@ app.use('/static', express.static('static'))
 
 io.sockets.on("connection", function (socket) {
   updateState();
-
   socket.on("new user", function (data, callback) {
     if (nicknames.indexOf(data) !== -1) callback(false);
     else {
