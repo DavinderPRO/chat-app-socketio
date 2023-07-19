@@ -98,7 +98,6 @@
     <script type="text/javascript">
         jQuery(function ($) {
             var socket = io.connect();
-
             $('#nickname-form').submit(function (e) {
                 e.preventDefault();
                 socket.emit('new user', $('#nickname').val(), function (data) {
@@ -120,6 +119,12 @@
                 $('#message').val('');
             });
 
+
+            socket.once("all messages", function (dataArray) {
+                dataArray.forEach(data => {
+                    $('.message-box').append("<div class='row message-row'><div class='col' style='max-width: 80%;'><p class='others-message'><span class='nickname-chat'>" + data.nickname + "</span><br/>" + data.message + '</p></div></div>');
+                });
+            });
             socket.on('usernames', function (data) {
                 $('#nickname-list').html('');
                 data.forEach(function (username, index) {
