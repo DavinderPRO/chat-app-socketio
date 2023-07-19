@@ -4,7 +4,7 @@ let express = require("express"),
   io = require("socket.io").listen(server),
   nicknames = [], messages = [];
 
-server.listen(3000);
+server.listen(process.env.PORT || 3000);
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index-materialize.html");
