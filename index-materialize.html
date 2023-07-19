@@ -1,0 +1,137 @@
+<html>
+
+<head>
+    <title>Chat</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/materialize.min.css" media="screen,projection">
+    <style type="text/css">
+        .my-message {
+            float: right;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            text-align: right;
+        }
+
+        .others-message {
+            float: left;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #21ade7;
+            color: white;
+            text-align: left;
+        }
+
+        .message-row {
+            margin: 0;
+        }
+
+        p {
+            margin: 2px;
+        }
+
+        .nickname-chat {
+            font-weight: bold;
+            font-style: italic;
+            font-size: small;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <div class="row">
+
+    </div>
+    <div class="row">
+        <div class="col s3">
+            <img class="responsive-img" src="/static/chatroomlogo.png">
+            <div class="collection" id="nickname-list">
+            </div>
+        </div>
+        <div class="col s9">
+            <div class="wrap">
+                <div class="row">
+                    <form class="col s6 offset-s3" id="nickname-form">
+                        <div class="row">
+                            <div class="input-field">
+                                <input id="nickname" type="text" class="validate">
+                                <label for="nickname">Nickname</label>
+                            </div>
+                            <span style="color: red; display: none;" id="error-message">This nickname is already
+                                taken</span>
+                        </div>
+                        <div class="row">
+                            <button class="btn waves-effect waves-light" type="submit" name="action"
+                                style="width: 100%">Start Messaging</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="content" style="display: none;">
+                <div class="row message-box" style="min-height: 75%">
+
+                </div>
+                <div class="row" style="margin-bottom: 0;">
+                    <form id="message-form">
+                        <div class="row" style="margin-bottom: 0;">
+                            <div class="input-field col s11">
+                                <i class="material-icons prefix">mode_edit</i>
+                                <textarea id="message" class="materialize-textarea"></textarea>
+                                <label for="message">Message</label>
+                            </div>
+                            <div class="col s1">
+                                <a type="submit" class="btn-floating btn-large waves-effect waves-light green"
+                                    id="send-message"><i class="material-icons">send</i></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="static/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="static/materialize.min.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            var socket = io.connect();
+
+            $('#nickname-form').submit(function (e) {
+                e.preventDefault();
+                socket.emit('new user', $('#nickname').val(), function (data) {
+                    if (data) {
+                        $('.wrap').hide();
+                        $('.content').show();
+                    }
+                    else {
+                        $('#error-message').show()
+                    }
+                });
+                $('#nickname').val('');
+            });
+
+            $('#send-message').click(function (e) {
+                e.preventDefault();
+                socket.emit('send message', $('#message').val());
+                $('.message-box').append("<div class='row message-row'><div class='col' style='float: right; max-width: 80%;'><p class='my-message'>" + $('#message').val() + '</p></div></div>');
+                $('#message').val('');
+            });
+
+            socket.on('usernames', function (data) {
+                $('#nickname-list').html('');
+                data.forEach(function (username, index) {
+                    $('#nickname-list').append("<a class='collection-item'><span class='new badge' data-badge-caption=''>Online</span>" + username + "</a>");
+                });
+            });
+
+            socket.on('new message', function (data) {
+                $('.message-box').append("<div class='row message-row'><div class='col' style='max-width: 80%;'><p class='others-message'><span class='nickname-chat'>" + data.nickname + "</span><br/>" + data.message + '</p></div></div>');
+            });
+        })
+    </script>
+</body>
+
+</html>
