@@ -2,13 +2,14 @@
 
 **Description**
 
-This is a simple chat room application, like yahoo messenger days, It uses Socket.IO for sharing real-time chat. 
+This is a simple chat room application, like yahoo messenger days, It uses Socket.IO for real-time chatting. 
+
 **Setup** 
 ```
-//Clone the application
-npm install && npm start
-// And then you can access the app from the browser by visiting the URL: http://locahost:3000
+npm install
+npm start
 ```
+
 **Try now**
 
 application Link: https://chatapp-bhfl.onrender.com
