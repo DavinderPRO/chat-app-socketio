@@ -118,12 +118,8 @@
                 $('.message-box').append("<div class='row message-row'><div class='col' style='float: right; max-width: 80%;'><p class='my-message'>" + $('#message').val() + '</p></div></div>');
                 $('#message').val('');
             });
-
-
             socket.once("all messages", function (dataArray) {
-                dataArray.forEach(data => {
-                    $('.message-box').append("<div class='row message-row'><div class='col' style='max-width: 80%;'><p class='others-message'><span class='nickname-chat'>" + data.nickname + "</span><br/>" + data.message + '</p></div></div>');
-                });
+                dataArray.forEach(appendMessage);
             });
             socket.on('usernames', function (data) {
                 $('#nickname-list').html('');
@@ -132,10 +128,12 @@
                 });
             });
 
-            socket.on('new message', function (data) {
-                $('.message-box').append("<div class='row message-row'><div class='col' style='max-width: 80%;'><p class='others-message'><span class='nickname-chat'>" + data.nickname + "</span><br/>" + data.message + '</p></div></div>');
-            });
+            socket.on('new message', appendMessage);
         })
+        function appendMessage(data) {
+            $('.message-box').append("<div class='row message-row'><div class='col' style='max-width: 80%;'><p class='others-message'><span class='nickname-chat'>" + data.nickname + "</span><br/>" + data.message + '</p></div></div>');
+
+        }
     </script>
 </body>
 
