@@ -2,8 +2,7 @@
 
 **Description**
 
-This is a simple chat room. You can use this to learn Socket.IO for chats or as a base for developing your app.
-
+This is a simple chat room application, like yahoo messenger days, It uses Socket.IO for sharing real-time chat. 
 **Setup** 
 ```
 //Clone the application
