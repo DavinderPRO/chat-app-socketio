@@ -11,8 +11,8 @@ node app.js
 And you can access the app from any browser by visiting the URL =locahost:3000=.
 
 ![Screenshot](https://raw.githubusercontent.com/DavinderPRO/chat-app-socketio/main)
+![Screenshot](https://github.com/DavinderPRO/chat-app-socketio/blob/main/static/chatroomlogo.png?raw=true)
 
-![My Image](../static/chatroomlogo.png)
 
 
 
